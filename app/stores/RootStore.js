@@ -2,39 +2,31 @@ import React from 'react';
 import { types } from 'mobx-state-tree';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { mockChords } from './mockData';
 
-const Tag = types.model('Tag', {
+const SongPart = types.model('SongPart', {
+  type: types.string,
+  chords: types.optional(types.array(types.string), []),
+})
+
+const Chord = types.model('Chord', {
   id: types.identifier,
   name: types.string,
-  color: types.string,
-  emoji: types.string,
-});
-
-const Event = types.model('Event', {
-  id: types.identifier,
-  tagId: types.reference(Tag),
-  time: types.number,
+  songParts: types.optional(types.array(SongPart), []),
 });
 
 const RootStore = types
   .model('RootStore', {
-    tags: types.optional(types.array(Tag), []),
-    events: types.optional(types.array(Event), []),
+    chords: types.optional(types.array(Chord), []),
   })
   .views((self) => ({
-    get tagsSorted() {
-      return self.tags.slice();
-    },
-    get eventsSorted() {
-      return self.events.slice();
+    get chordsSorted() {
+      return self.chords.slice();
     },
   }))
   .actions((self) => {
-    function addTag() {
 
-    }
-
-    function addEvent({ tagId }) {
+    function addChord({  }) {
       self.events.push({
         id: uuidv4(),
         tagId,
@@ -43,15 +35,14 @@ const RootStore = types
     }
 
     return {
-      addTag,
-      addEvent,
+      addChord,
     }
   });
 
 const StoreContext = React.createContext(null);
 
 export const StoreProvider = ({ children }) => {
-  const store = RootStore.create({  });
+  const store = RootStore.create({ chords: mockChords });
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };
 
