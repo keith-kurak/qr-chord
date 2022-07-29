@@ -9,24 +9,27 @@ const SongPart = types.model('SongPart', {
   chords: types.optional(types.array(types.string), []),
 })
 
-const Chord = types.model('Chord', {
+const Song = types.model('Chord', {
   id: types.identifier,
   name: types.string,
-  songParts: types.optional(types.array(SongPart), []),
+  parts: types.optional(types.array(SongPart), []),
 });
 
 const RootStore = types
   .model('RootStore', {
-    chords: types.optional(types.array(Chord), []),
+    songs: types.optional(types.array(Song), []),
   })
   .views((self) => ({
-    get chordsSorted() {
-      return self.chords.slice();
+    get songsSorted() {
+      return self.songs.slice();
     },
+    songForId(id) {
+      return self.songs.find(s => s.id === id)
+    }
   }))
   .actions((self) => {
 
-    function addChord({  }) {
+    function addSong({  }) {
       self.events.push({
         id: uuidv4(),
         tagId,
@@ -35,14 +38,14 @@ const RootStore = types
     }
 
     return {
-      addChord,
+      addSong,
     }
   });
 
 const StoreContext = React.createContext(null);
 
 export const StoreProvider = ({ children }) => {
-  const store = RootStore.create({ chords: mockChords });
+  const store = RootStore.create({ songs: mockChords });
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };
 

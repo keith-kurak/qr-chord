@@ -2,21 +2,21 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { FlatList, View, Text, Pressable } from 'react-native';
 
-const Chord = observer(function ({ chord, onPress }) {
+const Song = observer(function ({ song, onPress }) {
   return (
     <Pressable onPress={onPress}>
     <View style={{ padding: 10 }}>
       <Text>
-        {chord.name}
+        {song.name}
       </Text>
     </View>
     </Pressable>
   );
 });
 
-const ChordsList = observer(function ({ chords, onPressChord }) {
+const SongsList = observer(function ({ songs, onPressSong }) {
   const renderItem = function ({ item }) {
-    return <Chord chord={item} onPress={() => { onPressChord(item.id)}} />;
+    return <Song song={item} onPress={() => { onPressSong(item.id)}} />;
   };
 
   return (
@@ -24,10 +24,10 @@ const ChordsList = observer(function ({ chords, onPressChord }) {
       style={{ flex: 1 }}
       contentContainerStyle={{ marginTop: 30 }}
       keyExtractor={(item) => item.toString()}
-      data={chords}
+      data={songs}
       renderItem={renderItem}
     />
   );
 });
 
-export default ChordsList;
+export default SongsList;
