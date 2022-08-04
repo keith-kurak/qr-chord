@@ -4,15 +4,15 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { mockChords } from './mockData';
 
-const SongPart = types.model('SongPart', {
-  type: types.string,
-  chords: types.optional(types.array(types.string), []),
-})
+/*const SongBit = types.model('SongPart', {
+  type: types.string, // chord, label, direction
+  name: types.string, // chord name, verse/ chorus, repeat (x2, etc)
+})*/
 
 const Song = types.model('Chord', {
   id: types.identifier,
   name: types.string,
-  parts: types.optional(types.array(SongPart), []),
+  bits: types.optional(types.array(types.string), []),
 });
 
 const RootStore = types
